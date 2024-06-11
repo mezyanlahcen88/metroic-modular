@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('language_translates', function (Blueprint $table) {
             $table->id();
+            $table->string('model');
             $table->foreignId('language_id')->constrained('languages')->onDelete('cascade');
             $table->string('label');
             $table->mediumText('translation')->nullable();

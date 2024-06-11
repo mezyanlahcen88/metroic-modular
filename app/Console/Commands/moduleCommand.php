@@ -24,23 +24,23 @@ class moduleCommand extends Command
         // Generate the module
         Artisan::call('module:make', ['name' => [$className]]);
         // Generate the advanced model
-        Artisan::call('make:mdl', [
-            'name' => "{$name}",
-        ]);
+        // Artisan::call('make:mdl', [
+        //     'name' => "{$name}",
+        // ]);
 
-        // // Generate the migration
-        Artisan::call('make:module-migration', [
-            'name' => "{$className}",
-        ]);
-        // // Generate the Factory
+        // Generate the migration
+        // Artisan::call('make:module-migration', [
+        //     'name' => "{$className}",
+        // ]);
+        // Generate the Factory
         Artisan::call('make:module-factory', [
             'name' => "{$className}",
         ]);
 
         // // Generate the seeder
-        // Artisan::call('make:module-seeder', [
-        //     'name' => "{$name}",
-        // ]);
+        Artisan::call('make:module-seeder', [
+            'name' => "{$name}",
+        ]);
 
 
 

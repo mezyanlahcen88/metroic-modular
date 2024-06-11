@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\{{class}}\app\Models;
+namespace Modules\Post\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\{{class}}\Database\factories\{{class}}Factory;
+use Modules\Post\Database\factories\PostFactory;
 use Illuminate\Support\Str;
 
-class {{class}} extends Model
+class Post extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -27,8 +27,18 @@ class {{class}} extends Model
      */
     protected $keyType = 'string';
 
-     {{fillable}}
-    {{files}}
+     protected $fillable = [
+        'name',
+        'author',
+        'picture',
+        'category_id',
+        'user_id',
+    ];
+
+    private $files = [
+        'picture',
+    ];
+
     public function getFiles()
     {
         return $this->files;
@@ -44,13 +54,33 @@ class {{class}} extends Model
     }
 
     //  put the relation of this Model Here
-{{relationships}}
+public function Category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
     /**
      *getters pour recuperer les attribute de type file pour l'utiliser dans le crud
      *
      */
 
-   {{getRowsTable}}
+   public function getRowsTable()
+    {
+        return [
+            'id' => 'id',
+            'name' => 'name',
+            'author' => 'author',
+            'picture' => 'picture',
+            'category_id' => 'category_id',
+        ];
+    }
+
 
 
 
@@ -59,5 +89,15 @@ class {{class}} extends Model
      *
      */
 
-  {{getRowsTableTrashed}}
+  public function getRowsTableTrashed()
+    {
+        return [
+            'id' => 'id',
+            'name' => 'name',
+            'author' => 'author',
+            'picture' => 'picture',
+            'category_id' => 'category_id',
+        ];
+    }
+
 }
