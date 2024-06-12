@@ -1,34 +1,34 @@
 <?php
 
-namespace Modules\{{model}}\app\Http\Controllers;
+namespace Modules\Language\app\Http\Controllers;
 
 use App\Enums\StaticOptions;
 use Illuminate\Http\Request;
 use App\Services\CrudService;
-use Modules\{{model}}\app\Http\Requests\Store{{model}}Request;
-use Modules\{{model}}\app\Http\Requests\Update{{model}}Request;
+use Modules\Language\app\Http\Requests\StoreLanguageRequest;
+use Modules\Language\app\Http\Requests\UpdateLanguageRequest;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Validation\ValidationException;
-use Modules\{{model}}\app\Models\{{model}};
+use Modules\Language\app\Models\Language;
 use App\Http\Controllers\Controller;
 
 
 
-class {{class}} extends Controller
+class LanguageController extends Controller
 {
 
     public $staticOptions;
     public $crudService;
     public function __construct(CrudService $crudService, StaticOptions $staticOptions)
     {
-        $this->middleware('permission:{{lower}}-list|{{lower}}-create|{{lower}}-edit|{{lower}}-show|{{lower}}-delete', ['only' => ['index']]);
-        $this->middleware('permission:{{lower}}-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:{{lower}}-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:{{lower}}-show', ['only' => ['show']]);
-        $this->middleware('permission:{{lower}}-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:{{lower}}-restore', ['only' => ['restore']]);
-        $this->middleware('permission:{{lower}}-trashed', ['only' => ['trashed']]);
-        $this->middleware('permission:{{lower}}-forse-delete', ['only' => ['forseDelete']]);
+        // $this->middleware('permission:language-list|language-create|language-edit|language-show|language-delete', ['only' => ['index']]);
+        // $this->middleware('permission:language-create', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:language-edit', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:language-show', ['only' => ['show']]);
+        // $this->middleware('permission:language-delete', ['only' => ['destroy']]);
+        // $this->middleware('permission:language-restore', ['only' => ['restore']]);
+        // $this->middleware('permission:language-trashed', ['only' => ['trashed']]);
+        // $this->middleware('permission:language-forse-delete', ['only' => ['forseDelete']]);
         $this->staticOptions = $staticOptions;
         $this->crudService = $crudService;
     }
@@ -41,15 +41,15 @@ class {{class}} extends Controller
     public function index()
     {
 
-        $tableRows =(new {{model}}())->getRowsTable();
-        $objects = {{model}}::get();
-        return view('{{lower}}::index',compact('tableRows','objects'));
+        $tableRows =(new Language())->getRowsTable();
+        $objects = Language::get();
+        return view('language::index',compact('tableRows','objects'));
     }
 
-     public function get{{uppaercase}}Json()
+     public function getLanguagesJson()
     {
-        ${{uppaercase}} = {{model}}::orderBy('created_at','desc');
-        return Datatables(${{uppaercase}})
+        $Languages = Language::orderBy('created_at','desc');
+        return Datatables($Languages)
 
         // ->filterColumn('user.name' , function($query , $keyword){
         //     if(is_numeric($keyword)){
@@ -61,19 +61,19 @@ class {{class}} extends Controller
         // ->filterColumn('archive' , function($query , $keyword){
         //     $query->where('archive', $keyword);
         // })
-        ->addColumn('active' , function({{model}} ${{model}}){
-            return '<span class="badge ' . (!${{model}}->isactive ? 'bg-danger' : 'bg-success') . ' text-uppercase">' . (${{model}}->isactive ? 'Active' : 'Inactive') . '</span>
+        ->addColumn('active' , function(Language $Language){
+            return '<span class="badge ' . (!$Language->isactive ? 'bg-danger' : 'bg-success') . ' text-uppercase">' . ($Language->isactive ? 'Active' : 'Inactive') . '</span>
              ';
         })
-        ->addColumn('actions', function ({{model}} $object) {
-            return view('{{lower}}::actions', compact('object'));
+        ->addColumn('actions', function (Language $object) {
+            return view('language::actions', compact('object'));
         })
-        ->addColumn('checkbox', function ({{model}} $object) {
+        ->addColumn('checkbox', function (Language $object) {
             return view('components.checkbox', compact('object'));
         })
         ->rawColumns(['active','actions'])
         ->editColumn('created_at','{{\Carbon\Carbon::parse($created_at)->format("d/m/Y")}}')
-        ->editColumn('picture',function ({{model}} $object) {
+        ->editColumn('picture',function (Language $object) {
             return view('components.image', compact('object'));
          })
         ->setRowAttr(['align'=>'center'])
@@ -87,9 +87,9 @@ class {{class}} extends Controller
      */
     public function trashed(Request $request)
     {
-        $objects = {{model}}::onlyTrashed()->get();
-        $tableRows =(new {{model}}())->getRowsTableTrashed();
-        return view('{{lower}}::trashedIndex', compact('tableRows','objects'));
+        $objects = Language::onlyTrashed()->get();
+        $tableRows =(new Language())->getRowsTableTrashed();
+        return view('language::trashedIndex', compact('tableRows','objects'));
     }
 
     /**
@@ -99,7 +99,7 @@ class {{class}} extends Controller
      */
     public function create()
     {
-       return view('{{lower}}::create');
+       return view('language::create');
 
     }
 
@@ -109,15 +109,15 @@ class {{class}} extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Store{{model}}Request $request, {{model}} $model)
+    public function store(StoreLanguageRequest $request, Language $model)
     {
         try {
             $validated = $request->validated();
-            $this->crudService->storeRecord($model, $request, $model->getFillable(), $model->getFiles(), '{{lower}}', '{{plural}}');
+            $this->crudService->storeRecord($model, $request, $model->getFillable(), $model->getFiles(), 'language', 'languages');
 
-            return redirect()->route('{{plural}}.index');
+            return redirect()->route('languages.index');
              } catch (ValidationException $e) {
-            return redirect()->route('{{lower}}::create')->withErrors($e->validator)->withInput();
+            return redirect()->route('language::create')->withErrors($e->validator)->withInput();
         }
     }
 
@@ -125,43 +125,43 @@ class {{class}} extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\{{model}}  ${{lower}}
+     * @param  \App\Models\Language  $language
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $object = {{lower}}::findOrfail($id);
-        return view('{{plural}}.edit',compact('object'));
+        $object = language::findOrfail($id);
+        return view('languages.edit',compact('object'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\{{model}}  ${{lower}}
+     * @param  \App\Models\Language  $language
      * @return \Illuminate\Http\Response
      */
-    public function update(Update{{model}}Request $request,$id)
+    public function update(UpdateLanguageRequest $request,$id)
     {
         try {
             $validated = $request->validated();
-             $object = {{model}}::findOrFail($id);
-            $this->crudService->updateRecord($object, $request, $object->getFillable(), $object->getFiles(), '{{lower}}', '{{plural}}');
+             $object = Language::findOrFail($id);
+            $this->crudService->updateRecord($object, $request, $object->getFillable(), $object->getFiles(), 'language', 'languages');
 
-            return redirect()->route('{{plural}}.index');
+            return redirect()->route('languages.index');
             } catch (ValidationException $e) {
-            return redirect()->route('{{lower}}::edit')->withErrors($e->validator)->withInput();
+            return redirect()->route('language::edit')->withErrors($e->validator)->withInput();
         }
     }
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\{{model}}  ${{lower}}
+     * @param  \App\Models\Language  $language
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
-      $object = {{model}}::findOrFail($request->id)->delete();
+      $object = Language::findOrFail($request->id)->delete();
 
     }
 
@@ -175,9 +175,9 @@ class {{class}} extends Controller
     public function restore(Request $request, $id)
     {
 
-        $object = {{model}}::withTrashed()->findOrFail($id)->restore();
+        $object = Language::withTrashed()->findOrFail($id)->restore();
 
-        return redirect()->route('{{lower}}::index');
+        return redirect()->route('language::index');
     }
 
     /**
@@ -190,8 +190,8 @@ class {{class}} extends Controller
     public function forceDelete(Request $request, $id)
     {
 
-        $object = {{model}}::withTrashed()->findOrFail($id);
-        // deletePicture($object,'{{plural}}','picture');
+        $object = Language::withTrashed()->findOrFail($id);
+        // deletePicture($object,'languages','picture');
         $object->forceDelete();
 
     }
@@ -205,10 +205,10 @@ class {{class}} extends Controller
     public function changeStatus(Request $request)
     {
         $id = $request->id;
-        $object = {{model}}::findOrFail($id);
+        $object = Language::findOrFail($id);
         $object->active = !$object->active;
         $object->save();
-        $message = $object->active ? trans('translation.{{lower}}_message_activated') : trans('translation.{{lower}}_message_inactivated');
+        $message = $object->active ? trans('translation.language_message_activated') : trans('translation.language_message_inactivated');
         return response()->json(['code' => 200, 'active' => $object->active, 'message' => $message]);
     }
 }

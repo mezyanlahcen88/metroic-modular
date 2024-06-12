@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class AdvancedModelCommand extends Command
 {
-    protected $signature = 'make:mdl {name : The name of the Model class} {table : The name of the database table}';
+    protected $signature = 'make:module-model {table} {model}';
 
     protected $description = 'Create a new Model class with fillable properties based on a table';
 
     public function handle()
     {
-        $name = $this->argument('name');
+        $name = $this->argument('model');
         $table = $this->argument('table');
         $className = ucfirst($name);
         $modelName = ucfirst($name);
@@ -31,7 +31,7 @@ class AdvancedModelCommand extends Command
         }
 
         // Filter out the columns to exclude from the fillable array
-        $excludedColumns = ['id', 'created_at', 'updated_at'];
+        $excludedColumns = ['id', 'created_at', 'updated_at','deleted_at'];
         $filteredColumns = array_diff($columns, $excludedColumns);
 
         // Generate fillable array string

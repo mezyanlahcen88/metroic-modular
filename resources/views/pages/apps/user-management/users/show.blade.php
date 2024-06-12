@@ -4,9 +4,7 @@
         Users
     @endsection
 
-    {{-- @section('breadcrumbs')
-        {{ Breadcrumbs::render('user-management.users.show', $object) }}
-    @endsection --}}
+
 
     <!--begin::Layout-->
     <div class="d-flex flex-column flex-lg-row">
@@ -22,7 +20,7 @@
                         <!--begin::Avatar-->
                         <div class="symbol symbol-100px symbol-circle mb-7">
 
-                                <img src="{{ URL::asset(getPicture($object->avatar,'users'))}}" alt="image"/>
+                                <img src="{{ getPicture($object->picture,'users')}}" alt="image"/>
 
                         </div>
                         <!--end::Avatar-->
@@ -2145,6 +2143,6 @@
         </div>
         <!--end::Content-->
     </div>
- 
+
 
 </x-default-layout>

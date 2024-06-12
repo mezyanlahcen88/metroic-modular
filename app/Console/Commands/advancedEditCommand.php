@@ -6,37 +6,123 @@ use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
+
 
 class advancedEditCommand extends Command
 {
-    protected $signature = 'make:edit {name : The name of the edit blade}';
+    protected $signature = 'make:edit {table} {model}';
 
-    protected $description = 'edit a new edit blade';
+    protected $description = 'Edit a new edit blade';
 
     public function handle()
     {
-
-        $name = $this->argument('name');
+        $name = $this->argument('model');
+        $table = $this->argument('table');
         $lowerName = strtolower($name);
         $plural = Str::plural($lowerName);
         $modelName = ucfirst($name);
+        $object = '$object';
+
         // get the directory first
-        $directoryPath = base_path('Modules/'.$modelName.'/resources/views');
+        $directoryPath = base_path('Modules/' . $modelName . '/resources/views');
 
         // Get the content of the stub file
         $stub = File::get(app_path('Console/Commands/stubs/template/edit.stub'));
+
+        // Generate the form content based on table columns
+        $columns = Schema::getColumnListing($table);
+        $formContent = $this->generateFormContent($columns,$lowerName,$object);
 
         // Replace placeholders in the stub content
         $stub = str_replace('{{lowerName}}', $lowerName, $stub);
         $stub = str_replace('{{plural}}', $plural, $stub);
         $stub = str_replace('{{model}}', $name, $stub);
+        $stub = str_replace('{{formContent}}', $formContent, $stub);
 
-
-        // edit the Blade view file inside the new directory
+        // Edit the Blade view file inside the new directory
         $filePath = "{$directoryPath}/edit.blade.php";
         File::put($filePath, $stub);
 
-        $this->info('edit blade editd successfully!');
+        $this->info('Edit blade edited successfully!');
     }
 
+    private function generateFormContent($columns, $lowerName ,$object)
+    {
+        $excludedColumns = ['id', 'uuid'];
+        $avatarColumns = ['picture', 'logo', 'avatar'];
+        $formContent = '';
+        $avatarContent = '';
+        $hasAvatarColumn = false;
+
+        foreach ($columns as $column) {
+            if (in_array($column, $excludedColumns)) {
+                continue;
+            }
+
+            if (strpos($column, '_id') !== false) {
+                $option = Str::plural(str_replace('_id', '', $column));
+                $formContent .= <<<EOT
+
+                                            <x-single-select cols="col-md-6" div-id="{$column}" column="{$column}" model="{$lowerName}"
+                                                label="user_form_{$column}" optional="text-danger" id="{$column}" :options="{$option}()" :object=$object />
+                EOT;
+            } elseif (in_array($column, $avatarColumns)) {
+                $hasAvatarColumn = true;
+                $avatarContent .= <<<EOT
+
+                                        <x-image-field :background-url="url('/assets/media/svg/avatars/blank.svg')" :image-url="url('/assets/media/avatars/300-1.jpg')" avatar-name="{$column}" />
+                EOT;
+            } else {
+                $formContent .= <<<EOT
+
+                                            <x-input-field cols="col-md-6" divId="{$column}" column="{$column}" model="{$lowerName}"
+                                                optional="text-danger" inputType="text" className="" columnId="{$column}"
+                                                columnValue="{{ $object->{$column} }}" attribute="required" readonly="false" />
+                EOT;
+            }
+        }
+
+        if ($hasAvatarColumn) {
+            return <<<EOT
+                        <div class="col-md-9">
+                            <div class="card card-bordered">
+                                <div class="card-header">
+                                    <h3 class="card-title">Title</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        {$formContent}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Picture</h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    {$avatarContent}
+                                </div>
+                            </div>
+                        </div>
+            EOT;
+        } else {
+            return <<<EOT
+                        <div class="col-md-12">
+                            <div class="card card-bordered">
+                                <div class="card-header">
+                                    <h3 class="card-title">Title</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        {$formContent}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            EOT;
+        }
+    }
 }

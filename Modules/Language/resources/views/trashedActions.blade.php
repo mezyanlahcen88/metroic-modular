@@ -1,6 +1,6 @@
     <div class="d-flex justify-content-center gap-2">
-        @can('{{lowerName}}-restore')
-        <form action="{{ route('{{lowerName}}.restore', $object->id)}}" method="POST" id="restoreForm">
+        @can('language-restore')
+        <form action="{{ route('language.restore', $object->id)}}" method="POST" id="restoreForm">
             @csrf
             @method('PUT')
 
@@ -9,10 +9,10 @@
                 class="las la-undo-alt"></i></span></a>
         </form>
         @endcan
-        @can('{{lowerName}}-force-delete')
+        @can('language-force-delete')
             <div class="remove">
                 <a href="#" class="remove-item-btn" data-bs-toggle="modal"
-                data-id="{{ $object->id }}" data-route-name="{{ route('{{lowerName}}.destroy', 'delete') }}">
+                data-id="{{ $object->id }}" data-route-name="{{ route('language.destroy', 'delete') }}">
               <span class="badge  text-bg-danger"><i class="las la-trash"></i></span></a>
             </div>
         @endcan

@@ -29,9 +29,9 @@ class moduleCommand extends Command
         // ]);
 
         // Generate the migration
-        // Artisan::call('make:module-migration', [
-        //     'name' => "{$className}",
-        // ]);
+        Artisan::call('make:module-migration', [
+            'name' => "{$className}",
+        ]);
         // Generate the Factory
         Artisan::call('make:module-factory', [
             'name' => "{$className}",
@@ -55,13 +55,13 @@ class moduleCommand extends Command
             'name' => "{$name}",
         ]);
         // Generate the advanced create
-        Artisan::call('make:create', [
-            'name' => "{$name}",
-        ]);
+        // Artisan::call('make:create', [
+        //     'name' => "{$name}",
+        // ]);
         // Generate the advanced edit
-        Artisan::call('make:edit', [
-            'name' => "{$name}",
-        ]);
+        // Artisan::call('make:edit', [
+        //     'name' => "{$name}",
+        // ]);
         // Generate the advanced trashed index
         Artisan::call('make:trashedindex', [
             'name' => "{$name}",
@@ -97,7 +97,7 @@ class moduleCommand extends Command
         ]);
         // ###################### Crud section ######################
         $groupId = $this->createGroup($className);
-        $this->createPermissions($groupId,$className);
+        $this->createPermissions($groupId,$lowerName);
         // ###################### Message section ######################
         $this->info('Module created successfully!');
     }
@@ -124,73 +124,89 @@ class moduleCommand extends Command
      * @param int $groupId
      * @return void
      */
-    protected function createPermissions($groupId , $className)
+    protected function createPermissions($groupId , $lowerName)
     {
         $permissions = [
             [
-                'name' => $className.'-create',
-                'libele' => 'Add {$className}',  // 'libele' translates to 'label'
+                'name' => $lowerName.'-create',
+                'libele' => 'Add '.$lowerName,
                 'guard_name' => 'web',
                 'groupe_id' => $groupId,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
               ],
-            //   [
-            //     'name' => '{$className}-show',
-            //     'libele' => 'View {$className}',
-            //     'guard_name' => 'web',
-            //     'groupe_id' => $groupId,
-            //     'created_at' => Carbon::now(),
-            //     'updated_at' => Carbon::now(),
-            //   ],
-            //   [
-            //     'name' => '{$className}-edit',
-            //     'libele' => 'Edit {$className}',
-            //     'guard_name' => 'web',
-            //     'groupe_id' => $groupId,
-            //     'created_at' => Carbon::now(),
-            //     'updated_at' => Carbon::now(),
-            //   ],
-            //   [
-            //     'name' => '{$className}-delete',
-            //     'libele' => 'Delete {$className}',
-            //     'guard_name' => 'web',
-            //     'groupe_id' => $groupId,
-            //     'created_at' => Carbon::now(),
-            //     'updated_at' => Carbon::now(),
-            //   ],
-            //   [
-            //     'name' => '{$className}-list',
-            //     'libele' => '{$className} List',
-            //     'guard_name' => 'web',
-            //     'groupe_id' => $groupId,
-            //     'created_at' => Carbon::now(),
-            //     'updated_at' => Carbon::now(),
-            //   ],
-            //   [
-            //     'name' => '{$className}-trashed',
-            //     'libele' => 'Trashed {$className} List',
-            //     'guard_name' => 'web',
-            //     'groupe_id' => $groupId,
-            //     'created_at' => Carbon::now(),
-            //     'updated_at' => Carbon::now(),
-            //   ],
-            //   [
-            //     'name' => '{$className}-forse-delete',
-            //     'libele' => 'Force Delete',
-            //     'guard_name' => 'web',
-            //     'groupe_id' => $groupId,
-            //     'created_at' => Carbon::now(),
-            //     'updated_at' => Carbon::now(),
-            //   ],
-            //   [
-            //     'name' => '{$className}-restore',
-            //     'libele' => 'Restore {$className}',
-            //     'guard_name' => 'web',
-            //     'groupe_id' => $groupId,
-            //     'created_at' => Carbon::now(),
-            //     'updated_at' => Carbon::now(),
-            //   ]
+              [
+                'name' => $lowerName.'-show',
+                'libele' => 'Show '.$lowerName,
+                'guard_name' => 'web',
+                'groupe_id' => $groupId,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ],
+              [
+                'name' => $lowerName.'-edit',
+                'libele' => 'Edit '.$lowerName,
+                'guard_name' => 'web',
+                'groupe_id' => $groupId,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ],
+              [
+                'name' => $lowerName.'-delete',
+                'libele' => 'Delete '.$lowerName,
+                'guard_name' => 'web',
+                'groupe_id' => $groupId,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ],
+              [
+                'name' => $lowerName.'-list',
+                'libele' => $lowerName.' list',
+                'guard_name' => 'web',
+                'groupe_id' => $groupId,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ],
+              [
+                'name' => $lowerName.'-trashed',
+                'libele' => 'Trashed '.$lowerName.' list',
+                'guard_name' => 'web',
+                'groupe_id' => $groupId,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ],
+              [
+                'name' => $lowerName.'-forse-delete',
+                'libele' => 'Force delete',
+                'guard_name' => 'web',
+                'groupe_id' => $groupId,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ],
+              [
+                'name' => $lowerName.'-restore',
+                'libele' => 'Restore '.$lowerName,
+                'guard_name' => 'web',
+                'groupe_id' => $groupId,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ],
+              [
+                'name' => $lowerName.'-export',
+                'libele' => 'Export',
+                'guard_name' => 'web',
+                'groupe_id' => $groupId,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ],
+              [
+                'name' => $lowerName.'-multiple-delete',
+                'libele' => 'Multiple delete',
+                'guard_name' => 'web',
+                'groupe_id' => $groupId,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ]
         ];
 
         Permission::insert($permissions);

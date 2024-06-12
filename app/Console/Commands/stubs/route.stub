@@ -12,5 +12,6 @@ Route::group([], function () {
     Route::put('/{{lowerName}}/{id}/restore', [{{model}}Controller::class, 'restore'])->name('{{lowerName}}.restore');
     //liste all deleted
     Route::get('/{{lowerName}}/trashed', [{{model}}Controller::class, 'trashed'])->name('{{lowerName}}.trashed');
-    Route::resource('client', {{model}}Controller::class)->names('client');
+    Route::get('/admin/users/get-{{plural}}-json', [{{model}}Controller::class ,'getUsersJson'])->name('users.getUsersJson');
+    Route::resource('{{lowerName}}', {{model}}Controller::class)->names('{{lowerName}}');
 });

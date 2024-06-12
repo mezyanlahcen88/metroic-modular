@@ -1,13 +1,13 @@
 <x-default-layout>
     @section('breadcrumb')
         @include('components.breadcrumb', [
-            'title' => trans('translation.{{lowerName}}_form_manage_{{lowerName}}s'),
-            'createPermission' => '{{lowerName}}-create',
-            'createRoute' => route('{{lowerName}}.create'),
-            'createText' => trans('translation.{{lowerName}}_action_add'),
-            'deletedPermission' => '{{lowerName}}-trashed',
-            'deletedRoute' => route('{{lowerName}}.trashed'),
-            'deletedText' => trans('translation.{{lowerName}}_form_deleted_{{lowerName}}s_list'),
+            'title' => trans('translation.language_form_manage_languages'),
+            'createPermission' => 'language-create',
+            'createRoute' => route('language.create'),
+            'createText' => trans('translation.language_action_add'),
+            'deletedPermission' => 'language-trashed',
+            'deletedRoute' => route('language.trashed'),
+            'deletedText' => trans('translation.language_form_deleted_languages_list'),
         ])
           @endsection
  <div class="card card-p-1 card-flush">
@@ -31,13 +31,13 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                @include('{{lowerName}}::table', ['model' => '{{lowerName}}'])
+                @include('language::table', ['model' => 'language'])
             </div>
         </div>
     </div>
 
     @push('scripts')
-        <script src="{{ URL::asset('assets/custom_js/users.js') }}"></script>
+        <script src="{{ URL::asset('assets/custom_js/langauges.js') }}"></script>
         <script src="{{ URL::asset('assets/custom_js/delete.js') }}"></script>
     @endpush
 

@@ -68,7 +68,7 @@ class generateTranslation extends Command
         }
 
         $columns = Schema::getColumnListing($table);
-        $columns = array_diff($columns, ['id', 'created_at', 'updated_at', 'deleted_at']);
+        $columns = array_diff($columns, ['id']);
 
 
         $now = Carbon::now();
@@ -172,7 +172,7 @@ class generateTranslation extends Command
             [
                 'model' => $model,
                 'language_id' => 1,
-                'label' => $modelLower . '_form_manage_posts',
+                'label' => $modelLower . '_form_manage_'.$plural,
                 'translation' => 'Manage ' . $plural,
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -180,7 +180,7 @@ class generateTranslation extends Command
             [
                 'model' => $model,
                 'language_id' => 1,
-                'label' => $modelLower . '_form_posts_list',
+                'label' => $modelLower . '_form_'.$plural.'_list',
                 'translation' => 'List of ' . $plural,
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -188,7 +188,7 @@ class generateTranslation extends Command
             [
                 'model' => $model,
                 'language_id' => 1,
-                'label' => $modelLower . '_form_deleted_posts_list',
+                'label' => $modelLower . '_form_deleted_'.$plural.'_list',
                 'translation' => 'List deleted ' . $plural,
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -196,7 +196,7 @@ class generateTranslation extends Command
             [
                 'model' => $model,
                 'language_id' => 1,
-                'label' => $modelLower . '_form_manage_deleted_posts',
+                'label' => $modelLower . '_form_manage_deleted_'.$plural,
                 'translation' => 'Manage deleted ' . $plural,
                 'created_at' => $now,
                 'updated_at' => $now,

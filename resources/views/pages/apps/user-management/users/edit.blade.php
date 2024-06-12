@@ -178,7 +178,55 @@
 
                         <!--begin::Card body-->
                         <div class="card-body p-9 pt-4">
+                            <div class="row">
+                            <x-single-select cols="col-md-6" div-id="gender" column="gender" model="user"
+                                label="user_form_gender" optional="text-danger" id="gender" :options="genders()" :object=false />
+                            <x-input-field cols="col-md-6" divId="first_name" column="first_name" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="first_name"
+                                columnValue="{{ old('first_name') }}" attribute="required" readonly="false" />
+                            <x-input-field cols="col-md-6" divId="last_name" column="last_name" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="last_name"
+                                columnValue="{{ old('last_name') }}" attribute="required" readonly="false" />
+                            <x-input-field cols="col-md-6" divId="username" column="username" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="username"
+                                columnValue="{{ old('username') }}" attribute="required" readonly="false" />
+                            <x-input-field cols="col-md-6" divId="email" column="email" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="email"
+                                columnValue="{{ old('email') }}" attribute="required" readonly="false" />
+                            <x-input-field cols="col-md-6" divId="phone" column="phone" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="phone"
+                                columnValue="{{ old('phone') }}" attribute="required" readonly="false" />
+                            <x-input-field cols="col-md-6" divId="occupation" column="occupation" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="occupation"
+                                columnValue="{{ old('occupation') }}" attribute="required" readonly="false" />
+                            <x-single-select cols="col-md-6" div-id="roles_name" column="roles_name" label="user_form_roles_name"
+                                optional="text-danger" id="roles_name" :options="roles()" :object=false />
+                            <x-single-select cols="col-md-6" div-id="language_id" column="language_id" label="user_form_language_id"
+                                optional="text-danger" id="language_id" :options="dynamicLang()" :object=false />
 
+                            <x-single-select cols="col-md-6" div-id="country_id" column="country_id" label="user_form_country_id"
+                                optional="text-danger" id="country_id" :options="countries()" :object=false />
+
+                            <x-input-field cols="col-md-6" divId="state" column="state" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="state"
+                                columnValue="{{ old('state') }}" attribute="required" readonly="false" />
+
+                            <x-input-field cols="col-md-6" divId="city" column="city" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="city"
+                                columnValue="{{ old('city') }}" attribute="required" readonly="false" />
+
+                            <x-input-field cols="col-md-6" divId="address" column="address" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="address"
+                                columnValue="{{ old('address') }}" attribute="required" readonly="false" />
+
+                            <x-input-field cols="col-md-6" divId="code_postale" column="code_postale" model="user"
+                                optional="text-danger" inputType="text" className="" columnId="code_postale"
+                                columnValue="{{ old('code_postale') }}" attribute="required" readonly="false" />
+                                <div class="col-md-12 mt-3">
+                                    <button type="submit" class="btn btn-primary ">{{ trans('translation.general_general_save') }}</button>
+                                </div>
+
+                            </div>
                         </div>
                         <!--end::Card body-->
                     </div>
@@ -798,5 +846,5 @@
         </div>
         <!--end::Content-->
     </div>
-    
+
 </x-default-layout>

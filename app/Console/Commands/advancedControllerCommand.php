@@ -20,12 +20,14 @@ class advancedControllerCommand extends Command
         $pluralName = Str::plural($lowerName);
         $className = ucfirst($name) . 'Controller';
         $modelName = ucfirst($name);
+        $uppaercase = ucfirst($pluralName);
 
         $stub = File::get(app_path('Console/Commands/stubs/controller.stub'));
         $stub = str_replace('{{class}}', $className, $stub);
         $stub = str_replace('{{model}}', $modelName, $stub);
         $stub = str_replace('{{lower}}', $lowerName, $stub);
         $stub = str_replace('{{plural}}', $pluralName, $stub);
+        $stub = str_replace('{{uppaercase}}', $uppaercase, $stub);
 
                 // delete folder controllers
                 $directoryPath = base_path('Modules/'.$modelName.'/App/Http/Controllers');

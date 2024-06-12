@@ -55,4 +55,18 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->first_name .' '.$this->last_name;
     }
+
+    public static function getRowsTable()
+    {
+        return [
+            'user' => 'user',
+            'Role' => 'roles_name',
+            'Email' => 'email',
+            'Phone' => 'phone',
+            'Active' => 'isactive',
+            'Created at' => 'created_at',
+        ];
+    }
+
+
 }

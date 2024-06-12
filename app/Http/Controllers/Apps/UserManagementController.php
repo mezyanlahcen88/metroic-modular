@@ -30,8 +30,9 @@ class UserManagementController extends Controller
      */
     public function index(UsersDataTable $dataTable)
     {
+        $tableRows = User::getRowsTable();
         $objects = User::get();
-        return view('pages/apps.user-management.users.index',compact('objects'));
+        return view('pages/apps.user-management.users.index',compact('objects','tableRows'));
     }
 
     public function getUsersJson()
@@ -49,20 +50,20 @@ class UserManagementController extends Controller
         // ->filterColumn('archive' , function($query , $keyword){
         //     $query->where('archive', $keyword);
         // })
-        // ->addColumn('archive' , function(User $User){
-        //     return '<span class="badge ' . (!$User->archive ? 'bg-danger' : 'bg-success') . ' text-uppercase">' . ($User->archive ? 'Archive' : 'Inarchive') . '</span>
-        //      ';
-        // })
+        ->addColumn('active' , function(User $User){
+            return '<span class="badge ' . (!$User->isactive ? 'bg-danger' : 'bg-success') . ' text-uppercase">' . ($User->isactive ? 'Active' : 'Inactive') . '</span>
+             ';
+        })
         ->addColumn('actions', function (User $object) {
             return view('pages.apps.user-management.users.actions', compact('object'));
         })
         ->addColumn('checkbox', function (User $object) {
-            return view('pages.apps.user-management.users.checkbox', compact('object'));
+            return view('components.checkbox', compact('object'));
         })
-        ->rawColumns(['actions'])
+        ->rawColumns(['active','actions'])
         ->editColumn('created_at','{{\Carbon\Carbon::parse($created_at)->format("d/m/Y")}}')
         ->editColumn('picture',function (User $object) {
-            return view('pages.apps.user-management.users.image', compact('object'));
+            return view('components.image', compact('object'));
          })
         ->setRowAttr(['align'=>'center'])
         ->make(true);
