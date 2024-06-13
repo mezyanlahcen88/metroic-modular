@@ -2,10 +2,10 @@
     <thead>
         <!--begin::Table row-->
         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase">
-            <th>{{ trans('translation.language_table_picture') }}</th>
             @foreach ($tableRows as $key => $value)
                 <th>{{ trans('translation.' . $model . '_table_' . $value) }} </th>
             @endforeach
+            <td>{{ trans('translation.language_table_status')}}</td>
             <th class="sort" data-sort="action">{{ trans('translation.general_general_action') }}
             </th>
         </tr>
@@ -14,14 +14,25 @@
     <tbody class="fw-semibold text-gray-600 p-1">
         @foreach ($objects as $object)
             <tr class="text-center">
-                <td>
-                    <div class="symbol symbol-40px symbol-circle">
-                        <img src="{{ URL::asset(getPicture($object->avatar, 'languages')) }}" alt="image">
-                    </div>
-                </td>
                 @foreach ($tableRows as $key => $value)
                     <td> {{ $object->$key }}</td>
                 @endforeach
+                <td>
+                    <div class="form-check form-switch d-flex justify-content-center">
+                        <input class="form-check-input default"
+                            data-route-name="{{ route('language.changestatus') }}" type="checkbox"
+                            role="switch" data-id="{{ $object->id }}"
+                            {{ $object->isDefault ? 'checked' : '' }}>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check form-switch d-flex justify-content-center">
+                        <input class="form-check-input changeStatus"
+                            data-route-name="{{ route('language.changestatus') }}" type="checkbox"
+                            role="switch" data-id="{{ $object->id }}"
+                            {{ $object->status ? 'checked' : '' }}>
+                    </div>
+                </td>
                 <td>
                     @include('language::actions')
                 </td>

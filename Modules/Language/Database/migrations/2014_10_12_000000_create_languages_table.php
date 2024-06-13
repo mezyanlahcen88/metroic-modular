@@ -22,7 +22,6 @@ return new class extends Migration
             $table->boolean('visible')->default(0);
             $table->string('flag_path');
             $table->timestamps();
-
         });
     }
 

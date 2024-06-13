@@ -131,7 +131,7 @@ class {{class}} extends Controller
     public function edit($id)
     {
         $object = {{lower}}::findOrfail($id);
-        return view('{{plural}}.edit',compact('object'));
+        return view('{{lower}}::edit',compact('object'));
     }
 
     /**
@@ -148,9 +148,9 @@ class {{class}} extends Controller
              $object = {{model}}::findOrFail($id);
             $this->crudService->updateRecord($object, $request, $object->getFillable(), $object->getFiles(), '{{lower}}', '{{plural}}');
 
-            return redirect()->route('{{plural}}.index');
+            return redirect()->route('{{lower}}.index');
             } catch (ValidationException $e) {
-            return redirect()->route('{{lower}}::edit')->withErrors($e->validator)->withInput();
+            return redirect()->route('{{lower}}.edit')->withErrors($e->validator)->withInput();
         }
     }
     /**

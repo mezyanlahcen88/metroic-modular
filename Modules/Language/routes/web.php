@@ -12,6 +12,8 @@ Route::group([], function () {
     Route::put('/language/{id}/restore', [LanguageController::class, 'restore'])->name('language.restore');
     //liste all deleted
     Route::get('/language/trashed', [LanguageController::class, 'trashed'])->name('language.trashed');
+    Route::post('/language/change-default', [LanguageController::class, 'changeDefault'])->name('language.changedefault');
+
     Route::get('/languages/get-languages-json', [LanguageController::class ,'getUsersJson'])->name('users.getUsersJson');
     Route::resource('language', LanguageController::class)->names('language');
 });

@@ -37,8 +37,10 @@
     </div>
 
     @push('scripts')
-        <script src="{{ URL::asset('assets/custom_js/langauges.js') }}"></script>
+        <script src="{{ URL::asset('assets/custom_js/languages.js') }}"></script>
         <script src="{{ URL::asset('assets/custom_js/delete.js') }}"></script>
+        <script src="{{ URL::asset('assets/custom_js/change_status.js') }}"></script>
+        <script src="{{ URL::asset('assets/custom_js/makeLangueDefault.js') }}"></script>
     @endpush
 
 </x-default-layout>

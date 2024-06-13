@@ -10,22 +10,9 @@ use Illuminate\Support\Str;
 
 class Language extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $primaryKey = 'id';
 
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-    /**
-     * The "type" of the primary key ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
 
      protected $fillable = [
         'name',
@@ -63,11 +50,9 @@ class Language extends Model
    public function getRowsTable()
     {
         return [
-            'id' => 'id',
             'name' => 'name',
             'locale' => 'locale',
             'isDefault' => 'isDefault',
-            'status' => 'status',
         ];
     }
 
@@ -82,11 +67,9 @@ class Language extends Model
   public function getRowsTableTrashed()
     {
         return [
-            'id' => 'id',
             'name' => 'name',
             'locale' => 'locale',
             'isDefault' => 'isDefault',
-            'status' => 'status',
         ];
     }
 

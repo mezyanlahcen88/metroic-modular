@@ -131,7 +131,7 @@ class LanguageController extends Controller
     public function edit($id)
     {
         $object = language::findOrfail($id);
-        return view('languages.edit',compact('object'));
+        return view('language::edit',compact('object'));
     }
 
     /**
@@ -148,7 +148,7 @@ class LanguageController extends Controller
              $object = Language::findOrFail($id);
             $this->crudService->updateRecord($object, $request, $object->getFillable(), $object->getFiles(), 'language', 'languages');
 
-            return redirect()->route('languages.index');
+            return redirect()->route('language.index');
             } catch (ValidationException $e) {
             return redirect()->route('language::edit')->withErrors($e->validator)->withInput();
         }
@@ -162,7 +162,6 @@ class LanguageController extends Controller
     public function destroy(Request $request)
     {
       $object = Language::findOrFail($request->id)->delete();
-
     }
 
             /**
@@ -191,7 +190,7 @@ class LanguageController extends Controller
     {
 
         $object = Language::withTrashed()->findOrFail($id);
-        // deletePicture($object,'languages','picture');
+        deletePicture($object,'languages','flag_path');
         $object->forceDelete();
 
     }
@@ -206,9 +205,52 @@ class LanguageController extends Controller
     {
         $id = $request->id;
         $object = Language::findOrFail($id);
-        $object->active = !$object->active;
+        $object->status = !$object->status;
         $object->save();
-        $message = $object->active ? trans('translation.language_message_activated') : trans('translation.language_message_inactivated');
-        return response()->json(['code' => 200, 'active' => $object->active, 'message' => $message]);
+        return response()->json(['code' => 200, 'status' => $object->status, 'lang' => $object->name]);
     }
+    // public function translations($id){
+    //     $count = LanguageTranslate::where('language_id',$id)->first();
+    //     if(!$count){
+    //       alert()->error('Error', 'you should to activate this language');
+    //     return redirect()->back();
+    //     }else{
+    //           $objects = LanguageTranslate::where('language_id',$id)->get();
+    //     return view('languagetransations.index',compact('objects'));
+    //     }
+    // }
+
+    // public function filterByKeyWord(Request $request,$id){
+    //     $keyword = $request->keyword;
+    //     $objects =  LanguageTranslate::where('language_id',$id)
+    //     ->where(function ($query) use($keyword) {
+    //         $query->where('label','like',"%".$keyword."%")
+    //               ->orWhere('translation','like',"%".$keyword."%");
+    //     })->paginate(30)->withQueryString();
+    //     return view('languagetransations.index',compact('objects','id'));
+    //  }
+    public function changeDefault(Request $request)
+    {
+        $oldDefault = Language::where('isDefault', 1)->first();
+        $oldDefault->isDefault = 0;
+        $oldDefault->save();
+        $id = $request->id;
+        $object = Language::findOrFail($id);
+        $object->isDefault = 1;
+        $object->save();
+        //  add code to check if this language is active first
+        return response()->json(['code' => 200, 'lang' => $object->name]);
+    }
+
+    // public function setLocale($locale){
+    //     App::setLocale($locale);
+    //     Session::put('locale', $locale);
+    //     return redirect()->back();
+    // }
+    // public function switchLang($lang)
+    // {
+    //         App::setLocale($lang);
+    //         Session::put('applocale', $lang);
+    //         return Redirect::back();
+    // }
 }
